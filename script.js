@@ -25,6 +25,7 @@ window.onload = function() {
 
         ctx.clearRect(0, 0, canvasWidth, canvasHeight);
         george.draw();
+        george.advance();
         setTimeout(refreshCanvas, delay);
 
     }
@@ -47,7 +48,12 @@ window.onload = function() {
         };
 
         this.advance = function() {
-            
+
+            var nextPosition = this.body[0].slice();
+            nextPosition[0] += 1;
+            this.body.unshift(nextPosition);
+            this.body.pop();
+
 
         };
     }
