@@ -19,7 +19,7 @@ window.onload = function() {
     canvas.style.border = "1px solid";
     document.body.appendChild(canvas);
     ctx = canvas.getContext('2d');
-    george = new Snake([[6,4], [5,4], [4,4]], "right");
+    george = new Snake([[6,4], [5,4], [4,4],[3,4],[2,4]], "right");
     jerry = new Apple([10,10]);
     refreshCanvas();
     
@@ -32,6 +32,9 @@ window.onload = function() {
             // GAME OVER
         }
         else {
+            if(george.isEatingApple(jerry)) {
+                jerry.setNewPosition();
+            }
             ctx.clearRect(0, 0, canvasWidth, canvasHeight);
             george.draw();
             jerry.draw();
@@ -131,6 +134,15 @@ window.onload = function() {
             return wallCollision || snakeCollision;
 
         };
+
+        this.isEatingApple = function(appleToEat) 
+        {
+            var head = this.body[0];
+            if(head[0] === appleToEat.position[0] && head[1] === appleToEat.position[1])
+                return true;
+            else
+                return false;
+        };
     }
 
     function Apple(position){
@@ -146,6 +158,12 @@ window.onload = function() {
           ctx.arc(x, y, radius, 0, Math.PI*2, true);
           ctx.fill();
           ctx.restore();
+        };
+        this.setNewPosition = function() {
+
+            var newX = Math.round(Math.random() * (widthInBlocks - 1));
+            var newY = Math.round(Math.random() * (heightInBlocks - 1));
+            this.position = [newX, newY];
         };
     }
 
