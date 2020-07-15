@@ -33,7 +33,11 @@ window.onload = function() {
         }
         else {
             if(george.isEatingApple(jerry)) {
+                george.ateApple = true;
+                do {
                 jerry.setNewPosition();
+                }
+                while(jerry.isOnSnake(george))
             }
             ctx.clearRect(0, 0, canvasWidth, canvasHeight);
             george.draw();
@@ -52,6 +56,7 @@ window.onload = function() {
     function Snake(body, direction) {
         this.body = body;
         this.direction = direction;
+        this.ateApple = false;
         this.draw = function() {
             ctx.save();
             ctx.fillStyle = "#ff0000";
@@ -83,7 +88,10 @@ window.onload = function() {
             }
 
             this.body.unshift(nextPosition);
+            if(!this.ateApple)
             this.body.pop();
+            else
+            this.ateApple = false;
 
         };
 
@@ -164,6 +172,17 @@ window.onload = function() {
             var newX = Math.round(Math.random() * (widthInBlocks - 1));
             var newY = Math.round(Math.random() * (heightInBlocks - 1));
             this.position = [newX, newY];
+        };
+        this.isOnSnake = function(snakeToCheck) {
+            
+            var isOnSnake = false;
+            for(var i=0 ; i < snakeToCheck.body.length; i ++) {
+                if(this.position[0] === snakeToCheck.body[i][0] && this.position[1] === snakeToCheck.body[i][1]) {
+                    isOnSnake = true;
+                }
+            }
+            return isOnSnake;
+
         };
     }
 
